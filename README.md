@@ -1,8 +1,9 @@
-# Ramo Libre Web
+# Ramo Libre Web ![](https://img.shields.io/github/license/madmti/Ramo-Libre-Web)
 
-Un remake del frontend de mi app web para gestionar mis deberes academicos de la universidad. Ahora con WASM (C++) y Sveltekit.
+Este repo es para el remake de la aplicacion RamoLibre (una aplicacion para gestionar cosas de la vida universitaria), el proceso de analisis y diseño se esta documentando en la [Wiki del Proyecto](https://github.com/madmti/Ramo-Libre-Web/wiki). **Este proyecto esta abierto a ideas, sugerencias y contribuciones**.
 
-Para mas informacion sobre el proceso de creacion o documentacion visitar la [Wiki](https://github.com/madmti/Ramo-Libre-Web/wiki).
+Ahora integrando [GradeSolver](https://github.com/madmti/GradeSolver) como modulo **WASM** para las predicciones y evaluacion del estado de las reglas de aprobacion. La principal idea de este remake es dar una "interfaz mas facil" y un uso simple, mientras se mejora el performance.
 
-> [!NOTE]
-> Son bienvenidas ideas, sugerencias y contribuciones
+
+> [!TIP]
+> El proyecto actualmente esta en desarrollo, se puede consultar su estado en el [Project Board](https://github.com/users/madmti/projects/5/views/2)
