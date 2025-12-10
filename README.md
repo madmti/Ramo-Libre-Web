@@ -4,6 +4,5 @@ Este repo es para el remake de la aplicacion RamoLibre (una aplicacion para gest
 
 Ahora integrando [GradeSolver](https://github.com/madmti/GradeSolver) como modulo **WASM** para las predicciones y evaluacion del estado de las reglas de aprobacion. La principal idea de este remake es dar una "interfaz mas facil" y un uso simple, mientras se mejora el performance.
 
-
 > [!TIP]
 > El proyecto actualmente esta en desarrollo, se puede consultar su estado en el [Project Board](https://github.com/users/madmti/projects/5/views/2)
