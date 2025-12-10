@@ -1,4 +1,4 @@
-# Ramo Libre Web ![](https://img.shields.io/github/license/madmti/Ramo-Libre-Web)
+# Ramo Libre Web ![](https://img.shields.io/github/license/madmti/ramo-libre-web)
 
 Este repo es para el remake de la aplicacion RamoLibre (una aplicacion para gestionar cosas de la vida universitaria), el proceso de analisis y diseño se esta documentando en la [Wiki del Proyecto](https://github.com/madmti/Ramo-Libre-Web/wiki). **Este proyecto esta abierto a ideas, sugerencias y contribuciones**.
 
