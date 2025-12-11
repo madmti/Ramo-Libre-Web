@@ -2,7 +2,9 @@
 	import { Github, Heart } from '@lucide/svelte';
 </script>
 
-<div class="bg-linear-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-white shadow-lg flex flex-col justify-center">
+<div
+	class="bg-linear-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-white shadow-lg flex flex-col justify-center"
+>
 	<div class="text-center mb-6">
 		<Heart size={48} class="mx-auto mb-4 text-pink-200" />
 		<h3 class="font-bold text-2xl mb-2">¿Quieres Contribuir?</h3>
