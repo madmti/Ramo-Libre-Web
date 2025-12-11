@@ -3,7 +3,7 @@
 </script>
 
 <div
-	class="bg-linear-to-br from-indigo-500 to-purple-600 rounded-3xl p-8 text-white shadow-lg flex flex-col justify-center"
+	class="bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl p-8 text-white shadow-lg flex flex-col justify-center"
 >
 	<div class="flex items-center justify-between mb-4">
 		<h3 class="font-bold text-2xl">Motor de Cálculo</h3>
