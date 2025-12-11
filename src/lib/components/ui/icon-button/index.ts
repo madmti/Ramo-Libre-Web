@@ -1,4 +1,4 @@
-import IconButton from "./IconButton.svelte";
+import IconButton from './IconButton.svelte';
 
 export { IconButton };
 export default IconButton;

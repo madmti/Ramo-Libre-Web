@@ -1,12 +1,9 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
+	import { Button, type ButtonProps } from '$lib/components/ui/button';
 	import type { Snippet } from 'svelte';
-	import type { HTMLButtonAttributes } from 'svelte/elements';
 
-	interface IconButtonProps extends HTMLButtonAttributes {
-		variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+	interface IconButtonProps extends Omit<ButtonProps, 'children' | 'size'> {
 		size?: 'sm' | 'default' | 'lg';
-		class?: string;
 		children: Snippet;
 	}
 

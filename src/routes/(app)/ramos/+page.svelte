@@ -37,7 +37,7 @@
 		<!-- Panel Principal - Header y Contenido -->
 		<div class="lg:col-span-8 xl:col-span-9 flex flex-col gap-6">
 			<!-- Header del Ramo Seleccionado -->
-			<div class="shrink-0 ">
+			<div class="shrink-0">
 				<RamoHeader {selectedRamoId} />
 			</div>
 

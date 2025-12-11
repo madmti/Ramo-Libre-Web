@@ -31,7 +31,7 @@
 	<NavItem href="/configuracion" color="slate" text="Config" icon={Bolt as Icon} />
 </nav>
 
-<TooltipProvider delayDuration={100} >
+<TooltipProvider delayDuration={100}>
 	<div class="flex-1 overflow-hidden overflow-y-scroll max-sm:pb-4 max-sm:mb-2">
 		{@render children()}
 	</div>

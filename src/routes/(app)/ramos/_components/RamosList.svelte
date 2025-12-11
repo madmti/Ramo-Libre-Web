@@ -52,7 +52,9 @@
 	}
 </script>
 
-<div class="bg-white border border-slate-200 rounded-xl p-6 flex flex-col h-full min-h-0 overflow-hidden">
+<div
+	class="bg-white border border-slate-200 rounded-xl p-6 flex flex-col h-full min-h-0 overflow-hidden"
+>
 	<!-- Header -->
 	<div class="flex items-center justify-between mb-6 shrink-0">
 		<h2 class="text-xl font-bold text-slate-800">Mis Ramos</h2>
@@ -81,7 +83,10 @@
 
 	<!-- Formulario para agregar ramo -->
 	{#if isFormExpanded}
-		<div transition:slide={{ duration: 300 }} class="space-y-4 mb-6 p-4 bg-slate-50 rounded-lg border border-slate-200 shrink-0">
+		<div
+			transition:slide={{ duration: 300 }}
+			class="space-y-4 mb-6 p-4 bg-slate-50 rounded-lg border border-slate-200 shrink-0"
+		>
 			<div class="space-y-2">
 				<label for="nombreRamo" class="text-sm font-semibold text-slate-600">
 					Nueva Asignatura
@@ -112,7 +117,8 @@
 	<div class="space-y-3 flex-1 overflow-y-auto min-h-0">
 		{#each db.ramos.list as [id, ramo] (id)}
 			<div
-				class="group flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 cursor-pointer {selectedRamoId === id
+				class="group flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 cursor-pointer {selectedRamoId ===
+				id
 					? 'bg-orange-50 border-orange-200 shadow-sm'
 					: 'bg-white border-slate-200 hover:border-orange-200 hover:bg-orange-50/50'}"
 				onclick={() => onSelectRamo(id)}

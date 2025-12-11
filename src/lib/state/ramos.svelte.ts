@@ -22,12 +22,12 @@ export class RamosManager implements Serializable<RamosSerial> {
 	}
 
 	clear(): void {
-	    this._ramos.clear();
+		this._ramos.clear();
 	}
 
 	empty(): boolean {
-        return this._ramos.size === 0;
-    }
+		return this._ramos.size === 0;
+	}
 
 	add(ramo: Ramo) {
 		const id = crypto.randomUUID();

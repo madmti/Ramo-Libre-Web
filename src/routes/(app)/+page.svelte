@@ -25,7 +25,7 @@
 <div in:fly={{ y: 10, duration: 300, delay: 100 }} class="grid h-full w-full">
 	{#if !db.empty}
 		<div class="space-y-6">
-		    <WelcomeBar />
+			<WelcomeBar />
 
 			<div class="columns-1 lg:columns-2 gap-6 space-y-6">
 				<div class="break-inside-avoid">
