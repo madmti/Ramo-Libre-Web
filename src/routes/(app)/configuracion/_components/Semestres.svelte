@@ -16,15 +16,20 @@
 		if (e.key === 'Enter') e.currentTarget.blur();
 	}
 
+	function handleDeleteIndex(index: number) {
+		const name = db.semestres.list[index];
+		db.deleteSemesterData(name);
+	}
+
 	function handleDeleteActive() {
 		if (db.semestres.active === null) return;
-		// Opcional: window.confirm("¿Seguro?")
-		db.semestres.remove(db.semestres.active);
+		const name = db.semestres.activeName;
+		db.deleteSemesterData(name);
 	}
 </script>
 
 <div class="w-full mx-auto animate-in fade-in zoom-in-95 duration-300">
-	<div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+	<div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
 		<div
 			class="relative bg-linear-to-r from-indigo-600 to-indigo-700 p-6 sm:p-8 text-white transition-all group/hero"
 		>
@@ -103,7 +108,7 @@
 							<button
 								onclick={(e) => {
 									e.stopPropagation();
-									db.semestres.remove(index);
+									handleDeleteIndex(index);
 								}}
 								class="opacity-0 group-hover:opacity-100 p-2 text-gray-300 hover:text-red-500 transition-opacity cursor-pointer"
 							>
