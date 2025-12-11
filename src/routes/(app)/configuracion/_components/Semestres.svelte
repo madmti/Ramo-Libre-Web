@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { db } from '$lib/state/index.svelte';
 	import { Trash2, Plus, Calendar, CircleCheck, History } from '@lucide/svelte';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 
 	let newSemesterName = $state('');
+	let deleteConfirmData = $state<{ type: 'index' | 'active'; index?: number; name: string } | null>(
+		null
+	);
 
 	function handleAddKey(e: KeyboardEvent) {
 		if (e.key === 'Enter') {
@@ -16,15 +20,36 @@
 		if (e.key === 'Enter') e.currentTarget.blur();
 	}
 
-	function handleDeleteActive() {
+	function openDeleteConfirm(index: number) {
+		const name = db.semestres.list[index];
+		deleteConfirmData = { type: 'index', index, name };
+	}
+
+	function openDeleteActiveConfirm() {
 		if (db.semestres.active === null) return;
-		// Opcional: window.confirm("¿Seguro?")
-		db.semestres.remove(db.semestres.active);
+		const name = db.semestres.activeName;
+		deleteConfirmData = { type: 'active', name };
+	}
+
+	function confirmDelete() {
+		if (!deleteConfirmData) return;
+
+		if (deleteConfirmData.type === 'index' && deleteConfirmData.index !== undefined) {
+			db.deleteSemesterData(deleteConfirmData.name);
+		} else if (deleteConfirmData.type === 'active') {
+			db.deleteSemesterData(deleteConfirmData.name);
+		}
+
+		deleteConfirmData = null;
+	}
+
+	function cancelDelete() {
+		deleteConfirmData = null;
 	}
 </script>
 
 <div class="w-full mx-auto animate-in fade-in zoom-in-95 duration-300">
-	<div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+	<div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col">
 		<div
 			class="relative bg-linear-to-r from-indigo-600 to-indigo-700 p-6 sm:p-8 text-white transition-all group/hero"
 		>
@@ -36,7 +61,7 @@
 
 				{#if db.semestres.active !== null}
 					<button
-						onclick={handleDeleteActive}
+						onclick={openDeleteActiveConfirm}
 						class="p-2 rounded-lg bg-white/10 text-white/60 hover:bg-red-500 hover:text-white transition-all backdrop-blur-sm z-20 cursor-pointer"
 						title="Eliminar semestre actual"
 					>
@@ -103,7 +128,7 @@
 							<button
 								onclick={(e) => {
 									e.stopPropagation();
-									db.semestres.remove(index);
+									openDeleteConfirm(index);
 								}}
 								class="opacity-0 group-hover:opacity-100 p-2 text-gray-300 hover:text-red-500 transition-opacity cursor-pointer"
 							>
@@ -129,5 +154,34 @@
 				</div>
 			</div>
 		</div>
+
+		<AlertDialog.Root
+			open={deleteConfirmData !== null}
+			onOpenChange={(open) => !open && cancelDelete()}
+		>
+			<AlertDialog.Content>
+				<AlertDialog.Header>
+					<AlertDialog.Title>¿Confirmar eliminación?</AlertDialog.Title>
+					<AlertDialog.Description>
+						{#if deleteConfirmData}
+							Esta acción eliminará permanentemente el semestre <strong
+								>"{deleteConfirmData.name}"</strong
+							> y todos los datos asociados a él. Esta acción no se puede deshacer.
+						{/if}
+					</AlertDialog.Description>
+				</AlertDialog.Header>
+				<AlertDialog.Footer>
+					<AlertDialog.Cancel onclick={cancelDelete} class="cursor-pointer"
+						>Cancelar</AlertDialog.Cancel
+					>
+					<AlertDialog.Action
+						onclick={confirmDelete}
+						class="bg-red-600 hover:bg-red-700 cursor-pointer"
+					>
+						Eliminar
+					</AlertDialog.Action>
+				</AlertDialog.Footer>
+			</AlertDialog.Content>
+		</AlertDialog.Root>
 	</div>
 </div>

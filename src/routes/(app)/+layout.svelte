@@ -1,5 +1,6 @@
 <script lang="ts">
 	import NavItem from '$lib/components/NavItem.svelte';
+	import { TooltipProvider } from '$lib/components/ui/tooltip';
 	import {
 		GraduationCap,
 		CalendarCheck,
@@ -26,10 +27,12 @@
 		icon={CalendarDays as Icon}
 		disabled
 	/>
-	<NavItem href="/ramos" color="orange" text="Ramos" icon={BookMarked as Icon} disabled />
+	<NavItem href="/ramos" color="orange" text="Ramos" icon={BookMarked as Icon} />
 	<NavItem href="/configuracion" color="slate" text="Config" icon={Bolt as Icon} />
 </nav>
 
-<div class="flex-1 overflow-hidden overflow-y-scroll">
-	{@render children()}
-</div>
+<TooltipProvider delayDuration={100}>
+	<div class="flex-1 overflow-hidden overflow-y-scroll max-sm:pb-4 max-sm:mb-2">
+		{@render children()}
+	</div>
+</TooltipProvider>

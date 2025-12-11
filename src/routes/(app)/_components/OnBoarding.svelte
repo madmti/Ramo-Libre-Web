@@ -18,7 +18,7 @@
 	}
 </script>
 
-<div class="bg-white border border-gray-200 rounded-3xl p-8 flex flex-col justify-center shadow-sm">
+<div class="bg-white border border-gray-200 rounded-xl p-8 flex flex-col justify-center shadow-sm">
 	<div class="mb-6 flex justify-between items-center">
 		<div>
 			<div class="flex gap-2 items-center">

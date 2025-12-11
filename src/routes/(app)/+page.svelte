@@ -5,24 +5,45 @@
 	import GradeSolver from './_components/GradeSolver.svelte';
 	import Offline from './_components/Offline.svelte';
 	import Github from './_components/Github.svelte';
+	import NextClass from './_components/NextClass.svelte';
+	import AcademicHealth from './_components/AcademicHealth.svelte';
+	import UpcomingEvents from './_components/UpcomingEvents.svelte';
+	import SemestreProgress from './_components/SemestreProgress.svelte';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import WelcomeBar from './_components/WelcomeBar.svelte';
 
 	let semesterName = '';
 
 	function handleStart() {
 		if (!semesterName) return;
 		db.semestres.add(semesterName);
-		goto(resolve('/configuracion'));
+		goto(resolve('/configuracion#semesters' as '/configuracion'));
 	}
 </script>
 
 <div in:fly={{ y: 10, duration: 300, delay: 100 }} class="grid h-full w-full">
-	{#if db.semestres.list.length > 0}
-		<div
-			class="flex flex-col items-center justify-center h-full w-full text-center gap-4 p-6 bg-white rounded-lg shadow-md"
-		>
-			<h2 class="text-2xl font-bold">¡Ya tienes semestres configurados!</h2>
+	{#if !db.empty}
+		<div class="space-y-6">
+			<WelcomeBar />
+
+			<div class="columns-1 lg:columns-2 gap-6 space-y-6">
+				<div class="break-inside-avoid">
+					<NextClass />
+				</div>
+
+				<div class="break-inside-avoid">
+					<SemestreProgress />
+				</div>
+
+				<div class="break-inside-avoid">
+					<AcademicHealth />
+				</div>
+
+				<div class="break-inside-avoid">
+					<UpcomingEvents />
+				</div>
+			</div>
 		</div>
 	{:else}
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">

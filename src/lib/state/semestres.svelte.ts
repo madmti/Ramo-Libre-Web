@@ -6,38 +6,60 @@ type SemestresSerial = {
 };
 
 export class SemestresManager implements Serializable<SemestresSerial> {
-	active = $state<number | null>(null);
-	list = $state<string[]>([]);
+	private _active = $state<number | null>(null);
+	private _list = $state<string[]>([]);
+
+	get active() {
+		return this._active;
+	}
+
+	get list() {
+		return this._list;
+	}
 
 	fromSerial(serial: SemestresSerial) {
-		this.active = serial.active;
-		this.list = serial.list || [];
+		this._active = serial.active;
+		this._list = serial.list || [];
 	}
 
 	toSerial(): SemestresSerial {
 		return {
-			active: this.active,
-			list: [...this.list]
+			active: this._active,
+			list: [...this._list]
 		};
+	}
+
+	clear() {
+		this._active = null;
+		this._list = [];
+	}
+
+	empty(): boolean {
+		return this._list.length === 0;
 	}
 
 	add(name: string) {
 		if (!name.trim()) return;
-		this.list.push(name);
-		if (this.list.length === 1) this.active = 0;
+		this._list.push(name);
+		if (this._list.length === 1) this._active = 0;
 	}
 
 	remove(index: number) {
-		this.list.splice(index, 1);
-		if (this.active === index) this.active = null;
-		else if (this.active !== null && this.active > index) this.active--;
+		this._list.splice(index, 1);
+		if (this._active === index) this._active = null;
+		else if (this._active !== null && this._active > index) this._active--;
 	}
 
 	update(index: number, name: string) {
-		this.list[index] = name;
+		this._list[index] = name;
 	}
 
 	setActive(index: number) {
-		this.active = index;
+		this._active = index;
+	}
+
+	get activeName() {
+		if (this._active === null) return 'default';
+		return this._list[this._active];
 	}
 }

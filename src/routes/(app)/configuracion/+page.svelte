@@ -1,26 +1,49 @@
 <script>
 	import { fly } from 'svelte/transition';
-	import Semestres from './components/Semestres.svelte';
-	import Sincronizacion from './components/Sincronizacion.svelte';
-	import Aparicencia from './components/Apariencia.svelte';
-	import About from './components/About.svelte';
+	import { page } from '$app/state';
+	import { onMount } from 'svelte';
+	import Semestres from './_components/Semestres.svelte';
+	import Sincronizacion from './_components/Sincronizacion.svelte';
+	import Aparicencia from './_components/Apariencia.svelte';
+	import About from './_components/About.svelte';
+
+	let highlightedComponent = $state('');
+
+	onMount(() => {
+		const hash = page.url.hash.slice(1);
+		if (hash) {
+			highlightedComponent = hash;
+		}
+	});
 </script>
 
-<div in:fly={{ y: 10, duration: 300, delay: 100 }} class="p-4 w-full">
+<div in:fly={{ y: 10, duration: 300, delay: 100 }} class="w-full">
 	<div class="columns-1 lg:columns-2 gap-6 space-y-6">
-		<div class="break-inside-avoid">
+		<div
+			id="semestres"
+			class="break-inside-avoid {highlightedComponent === 'semesters' ? 'shine-effect' : ''}"
+		>
 			<Semestres />
 		</div>
 
-		<div class="break-inside-avoid">
+		<div
+			id="apariencia"
+			class="break-inside-avoid {highlightedComponent === 'theme' ? 'shine-effect' : ''}"
+		>
 			<Aparicencia />
 		</div>
 
-		<div class="break-inside-avoid">
+		<div
+			id="sync"
+			class="break-inside-avoid {highlightedComponent === 'sync' ? 'shine-effect' : ''}"
+		>
 			<Sincronizacion />
 		</div>
 
-		<div class="break-inside-avoid">
+		<div
+			id="about"
+			class="break-inside-avoid {highlightedComponent === 'about' ? 'shine-effect' : ''}"
+		>
 			<About />
 		</div>
 	</div>
