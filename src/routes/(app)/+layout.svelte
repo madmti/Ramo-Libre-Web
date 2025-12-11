@@ -15,7 +15,7 @@
 	let { children } = $props();
 </script>
 
-<nav class="grid grid-cols-6 gap-4 mb-6">
+<nav class="grid grid-cols-6 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 sm:mb-6">
 	<NavItem href="/" color="indigo" text="RamoLibre" icon={GraduationCap as Icon} />
 	<NavItem href="/horarios" color="blue" text="Horarios" icon={CalendarCheck as Icon} disabled />
 	<NavItem href="/notas" color="green" text="Notas" icon={TrendingUp as Icon} disabled />
@@ -27,9 +27,9 @@
 		disabled
 	/>
 	<NavItem href="/ramos" color="orange" text="Ramos" icon={BookMarked as Icon} disabled />
-	<NavItem href="/configuracion" color="slate" text="Configuración" icon={Bolt as Icon} />
+	<NavItem href="/configuracion" color="slate" text="Config" icon={Bolt as Icon} />
 </nav>
 
-<div class="rounded-2xl bg-white shadow-sm border border-gray-200 flex-1 overflow-hidden">
+<div class="flex-1 overflow-hidden overflow-y-scroll">
 	{@render children()}
 </div>

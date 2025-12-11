@@ -23,7 +23,7 @@
 <a
 	href={resolve(href as '/')}
 	data-sveltekit-preload-data="hover"
-	class="group overflow-hidden relative bg-white rounded-2xl px-6 py-4 shadow-sm border border-gray-200 transition-all duration-200 hover:shadow-md hover:border-gray-300 hover:scale-105 block {className}
+	class="group overflow-hidden relative bg-white rounded-2xl sm:px-6 py-4 shadow-sm border border-gray-200 transition-all duration-200 hover:shadow-md hover:border-gray-300 hover:scale-105 block {className}
 		{active ? `ring-2 ${cu.ring} ${cu.bg} ${cu.border}` : cu.hover}
 		{disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}"
 	aria-current={active ? 'page' : undefined}
@@ -37,7 +37,7 @@
 		>
 			<div class="flex items-center gap-3 max-sm:justify-center w-full">
 				{#if icon}
-					{@render icon({ class: 'w-8 h-8 rounded-md p-1' })}
+					{@render icon({ class: 'w-8 h-8 rounded-md sm:p-1' })}
 				{/if}
 				<span class="text-lg font-semibold max-sm:hidden">{text}</span>
 			</div>
