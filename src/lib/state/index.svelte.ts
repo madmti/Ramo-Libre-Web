@@ -63,7 +63,7 @@ class RootStore {
 		localStorage.removeItem(storageKey);
 
 		// Find and remove the semester from the list
-		const semesterIndex = this.semestres.list.findIndex(name => name === semesterName);
+		const semesterIndex = this.semestres.list.findIndex((name) => name === semesterName);
 		if (semesterIndex !== -1) {
 			this.clear(semesterIndex);
 		}
