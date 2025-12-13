@@ -25,24 +25,28 @@
 	}
 </script>
 
-<div class="h-full" in:fly={{ y: 10, duration: 300, delay: 100 }}>
+<div class="sm:h-full sm:overflow-hidden" in:fly={{ y: 10, duration: 300, delay: 100 }}>
 	<!-- Layout Grid Responsivo -->
-	<div class="flex flex-col sm:grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
+	<div class="flex flex-col sm:grid grid-cols-1 lg:grid-cols-12 gap-6 sm:h-full">
 		<!-- Panel de Lista de Ramos -->
-		<div class="lg:col-span-4 xl:col-span-3 grid grid-rows-[1fr_auto] gap-4 h-full min-h-0">
-			<RamosList {selectedRamoId} onSelectRamo={handleSelectRamo} />
-			<ColorPicker {selectedRamoId} />
+		<div class="lg:col-span-4 xl:col-span-3 flex flex-col gap-4 sm:h-full sm:min-h-0 sm:overflow-hidden">
+			<div class="sm:flex-1 sm:overflow-y-auto sm:min-h-0">
+				<RamosList {selectedRamoId} onSelectRamo={handleSelectRamo} />
+			</div>
+			<div class="sm:flex-none">
+				<ColorPicker {selectedRamoId} />
+			</div>
 		</div>
 
 		<!-- Panel Principal - Header y Contenido -->
-		<div class="lg:col-span-8 xl:col-span-9 flex flex-col gap-6">
+		<div class="lg:col-span-8 xl:col-span-9 flex flex-col gap-6 sm:h-full sm:min-h-0 sm:overflow-hidden">
 			<!-- Header del Ramo Seleccionado -->
-			<div class="shrink-0">
+			<div class="sm:flex-none">
 				<RamoHeader {selectedRamoId} />
 			</div>
 
 			<!-- Contenido del Ramo -->
-			<div class="flex-1 min-h-0">
+			<div class="sm:flex-1 sm:overflow-y-auto sm:min-h-0">
 				<RamoContent {selectedRamoId} />
 			</div>
 		</div>

@@ -357,4 +357,29 @@ export class ColorUtils {
 		if (currentIndex === -1) return this.COLORS[0];
 		return this.COLORS[(currentIndex - 1 + this.COLORS.length) % this.COLORS.length];
 	}
+
+	static tailwindToHex(tailwindColor: string): HexColor {
+		// Extraer el primer color hex de las clases tailwind
+		// Buscar por las clases bg- más comunes
+		if (tailwindColor.includes('bg-red-100')) return '#ef4444';
+		if (tailwindColor.includes('bg-orange-100')) return '#f97316';
+		if (tailwindColor.includes('bg-amber-100')) return '#f59e0b';
+		if (tailwindColor.includes('bg-yellow-100')) return '#eab308';
+		if (tailwindColor.includes('bg-lime-100')) return '#84cc16';
+		if (tailwindColor.includes('bg-green-100')) return '#22c55e';
+		if (tailwindColor.includes('bg-emerald-100')) return '#10b981';
+		if (tailwindColor.includes('bg-teal-100')) return '#14b8a6';
+		if (tailwindColor.includes('bg-cyan-100')) return '#06b6d4';
+		if (tailwindColor.includes('bg-sky-100')) return '#0ea5e9';
+		if (tailwindColor.includes('bg-blue-100')) return '#3b82f6';
+		if (tailwindColor.includes('bg-indigo-100')) return '#6366f1';
+		if (tailwindColor.includes('bg-violet-100')) return '#8b5cf6';
+		if (tailwindColor.includes('bg-purple-100')) return '#a855f7';
+		if (tailwindColor.includes('bg-fuchsia-100')) return '#d946ef';
+		if (tailwindColor.includes('bg-pink-100')) return '#ec4899';
+		if (tailwindColor.includes('bg-rose-100')) return '#f43f5e';
+		
+		// Default a slate si no encuentra coincidencia
+		return '#64748b';
+	}
 }
