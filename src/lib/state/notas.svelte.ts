@@ -21,21 +21,22 @@ interface RamoData {
 }
 
 type NotasSerial = {
-	ramos: [RamoKey, {
-		evaluaciones: [EvaluacionKey, Evaluacion][];
-		tags: [TagKey, Tag][];
-	}][];
+	ramos: [
+		RamoKey,
+		{
+			evaluaciones: [EvaluacionKey, Evaluacion][];
+			tags: [TagKey, Tag][];
+		}
+	][];
 };
 
 export class NotasManager implements Serializable<NotasSerial> {
-	private _ramos = $state<SvelteMap<RamoKey, RamoData>>(
-		new SvelteMap<RamoKey, RamoData>()
-	);
+	private _ramos = $state<SvelteMap<RamoKey, RamoData>>(new SvelteMap<RamoKey, RamoData>());
 
 	fromSerial(serial: NotasSerial) {
 		// console.log('NotasManager.fromSerial called with:', serial);
 		const ramosMap = new SvelteMap<RamoKey, RamoData>();
-		
+
 		// Validar que serial y serial.ramos existan
 		if (serial && serial.ramos && Array.isArray(serial.ramos)) {
 			// console.log('Processing ramos:', serial.ramos.length);
@@ -48,7 +49,7 @@ export class NotasManager implements Serializable<NotasSerial> {
 		} else {
 			// console.log('No valid ramos data found, using empty structure');
 		}
-		
+
 		this._ramos = ramosMap;
 	}
 
@@ -248,6 +249,6 @@ export class NotasManager implements Serializable<NotasSerial> {
 
 	// Obtener lista de ramos con datos
 	getRamosWithData(): RamoKey[] {
-		return Array.from(this._ramos.keys()).filter(ramoId => this.hasRamoData(ramoId));
+		return Array.from(this._ramos.keys()).filter((ramoId) => this.hasRamoData(ramoId));
 	}
 }

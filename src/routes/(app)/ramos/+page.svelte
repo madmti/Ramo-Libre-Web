@@ -29,7 +29,9 @@
 	<!-- Layout Grid Responsivo -->
 	<div class="flex flex-col sm:grid grid-cols-1 lg:grid-cols-12 gap-6 sm:h-full">
 		<!-- Panel de Lista de Ramos -->
-		<div class="lg:col-span-4 xl:col-span-3 flex flex-col gap-4 sm:h-full sm:min-h-0 sm:overflow-hidden">
+		<div
+			class="lg:col-span-4 xl:col-span-3 flex flex-col gap-4 sm:h-full sm:min-h-0 sm:overflow-hidden"
+		>
 			<div class="sm:flex-1 sm:overflow-y-auto sm:min-h-0">
 				<RamosList {selectedRamoId} onSelectRamo={handleSelectRamo} />
 			</div>
@@ -39,7 +41,9 @@
 		</div>
 
 		<!-- Panel Principal - Header y Contenido -->
-		<div class="lg:col-span-8 xl:col-span-9 flex flex-col gap-6 sm:h-full sm:min-h-0 sm:overflow-hidden">
+		<div
+			class="lg:col-span-8 xl:col-span-9 flex flex-col gap-6 sm:h-full sm:min-h-0 sm:overflow-hidden"
+		>
 			<!-- Header del Ramo Seleccionado -->
 			<div class="sm:flex-none">
 				<RamoHeader {selectedRamoId} />

@@ -378,7 +378,7 @@ export class ColorUtils {
 		if (tailwindColor.includes('bg-fuchsia-100')) return '#d946ef';
 		if (tailwindColor.includes('bg-pink-100')) return '#ec4899';
 		if (tailwindColor.includes('bg-rose-100')) return '#f43f5e';
-		
+
 		// Default a slate si no encuentra coincidencia
 		return '#64748b';
 	}

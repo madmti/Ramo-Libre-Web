@@ -45,8 +45,6 @@
 				<span class="font-medium">Ecuación de Nota</span>
 			</div>
 
-
-
 			<!-- Fórmula central -->
 			<div class="text-center space-y-4">
 				<div class="flex items-center justify-center gap-2 font-mono text-sm flex-wrap p-8 mt-4">
@@ -70,7 +68,11 @@
 				<!-- Información del peso total -->
 				{#if totalWeight !== 100}
 					<div class="text-xs {totalWeight > 100 ? 'text-red-500' : 'text-amber-500'} font-medium">
-						Peso total: {totalWeight}% {totalWeight > 100 ? '(excede 100%)' : totalWeight < 100 ? '(falta ' + (100 - totalWeight) + '%)' : ''}
+						Peso total: {totalWeight}% {totalWeight > 100
+							? '(excede 100%)'
+							: totalWeight < 100
+								? '(falta ' + (100 - totalWeight) + '%)'
+								: ''}
 					</div>
 				{/if}
 			</div>

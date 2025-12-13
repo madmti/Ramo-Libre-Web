@@ -25,13 +25,17 @@
 
 	// --- DERIVADOS ---
 	// Usar el manager de notas con ramoId (métodos de solo lectura)
-	let evaluacionesList = $derived(selectedRamoId ? db.notas.getEvaluacionesData(selectedRamoId).list : []);
+	let evaluacionesList = $derived(
+		selectedRamoId ? db.notas.getEvaluacionesData(selectedRamoId).list : []
+	);
 	let tagsList = $derived(selectedRamoId ? db.notas.getTagsData(selectedRamoId).list : []);
 	let totalWeight = $derived(selectedRamoId ? db.notas.getCurrentWeight(selectedRamoId) : 0);
 
 	// Tag seleccionado para pintar
 	let selectedTag = $derived(
-		selectedTagForPainting && selectedRamoId ? db.notas.getTag(selectedRamoId, selectedTagForPainting) : null
+		selectedTagForPainting && selectedRamoId
+			? db.notas.getTag(selectedRamoId, selectedTagForPainting)
+			: null
 	);
 
 	// --- LÓGICA DEL MODO PINTOR ---
@@ -48,7 +52,11 @@
 	}
 
 	function paintEvaluation(evaluacionId: string) {
-		console.log('paintEvaluation called with:', { evaluacionId, paintMode, selectedTagForPainting });
+		console.log('paintEvaluation called with:', {
+			evaluacionId,
+			paintMode,
+			selectedTagForPainting
+		});
 		if (!paintMode || !selectedTagForPainting || !selectedRamoId) {
 			console.log('paintEvaluation - early return due to missing conditions');
 			return;
@@ -64,7 +72,7 @@
 		if (tag) {
 			const twClasses = ColorUtils.hexToTailwindClasses(newColor as HexColor);
 			const newColorClasses = `${twClasses.bg} ${twClasses.text} ${twClasses.border}`;
-			
+
 			db.notas.getTags(selectedRamoId).update(tagId, {
 				...tag,
 				color: newColorClasses
@@ -92,7 +100,7 @@
 		db.notas.removeTagFromAllEvaluaciones(selectedRamoId, tagId);
 		// Luego eliminar el tag
 		db.notas.getTags(selectedRamoId).remove(tagId);
-		
+
 		if (selectedTagForPainting === tagId) {
 			selectedTagForPainting = null;
 		}
@@ -101,13 +109,13 @@
 	// --- LÓGICA DE EVALUACIONES ---
 	function addEvaluation() {
 		if (!newEvalName.trim() || !selectedRamoId) return;
-		
+
 		db.notas.getEvaluaciones(selectedRamoId).add({
 			name: newEvalName.trim(),
 			weight: newEvalWeight,
 			tags: []
 		});
-		
+
 		newEvalName = '';
 		newEvalWeight = Math.max(0, 100 - totalWeight);
 	}
@@ -260,7 +268,8 @@
 							{isCurrentColor ? 'ring-2 ring-indigo-500 scale-110' : 'hover:ring-1 hover:ring-gray-300'}"
 							style="background-color: {color}"
 							title={color}
-							onclick={() => selectedTagForPainting && changeTagColor(selectedTagForPainting, color)}
+							onclick={() =>
+								selectedTagForPainting && changeTagColor(selectedTagForPainting, color)}
 						></button>
 					{/each}
 				</div>
@@ -324,7 +333,8 @@
 							<input
 								type="text"
 								value={evaluacion.name}
-								onchange={(e) => updateEvaluacionName(evaluacionId, (e.target as HTMLInputElement).value)}
+								onchange={(e) =>
+									updateEvaluacionName(evaluacionId, (e.target as HTMLInputElement).value)}
 								onclick={(e) => !paintMode && e.stopPropagation()}
 								disabled={paintMode}
 								class="flex-1 bg-transparent border-none outline-none font-medium text-gray-800 placeholder-gray-400 focus:ring-0 text-base min-w-0
@@ -369,7 +379,11 @@
 								<input
 									type="number"
 									value={evaluacion.weight}
-									onchange={(e) => updateEvaluacionWeight(evaluacionId, Number((e.target as HTMLInputElement).value))}
+									onchange={(e) =>
+										updateEvaluacionWeight(
+											evaluacionId,
+											Number((e.target as HTMLInputElement).value)
+										)}
 									disabled={paintMode}
 									class="w-10 text-right bg-transparent outline-none font-bold text-gray-700 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none
 	                                {paintMode ? 'cursor-crosshair' : ''}"
