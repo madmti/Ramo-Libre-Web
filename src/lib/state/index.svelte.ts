@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import { SemestresManager } from './semestres.svelte';
 import { RamosManager } from './ramos.svelte';
+import { NotasManager } from './notas.svelte';
 
 const STORAGE_KEY = (sem: string) => `RAMOLIBRE_ROOT_STORE_V1_${sem}`;
 const SEMESTER_KEY = 'RAMOLIBRE_SEMESTER';
@@ -8,6 +9,7 @@ const SEMESTER_KEY = 'RAMOLIBRE_SEMESTER';
 class RootStore {
 	private _semestres = new SemestresManager();
 	private _ramos = new RamosManager();
+	private _notas = new NotasManager();
 
 	get semestres() {
 		return this._semestres;
@@ -15,6 +17,10 @@ class RootStore {
 
 	get ramos() {
 		return this._ramos;
+	}
+
+	get notas() {
+		return this._notas;
 	}
 
 	get empty(): boolean {
@@ -54,6 +60,7 @@ class RootStore {
 		const data = JSON.parse(localStorage.getItem(STORAGE_KEY(semester)) || '{}');
 		// Cargar datos
 		this.ramos.fromSerial(data.ramos ?? []);
+		this.notas.fromSerial(data.notas ?? { ramos: [] });
 	}
 
 	deleteSemesterData(semesterName: string) {
@@ -76,6 +83,7 @@ class RootStore {
 			this.semestres.clear();
 		}
 		this.ramos.clear();
+		this.notas.clear();
 	}
 
 	private save() {
@@ -83,7 +91,8 @@ class RootStore {
 		if (!browser) return;
 		// Recolectar los datos de cada manager
 		const semesterSnapshot = {
-			ramos: this.ramos.toSerial()
+			ramos: this.ramos.toSerial(),
+			notas: this.notas.toSerial()
 		};
 		const semester = this.semestres.activeName ?? 'default';
 		const semesters = this.semestres.toSerial();
