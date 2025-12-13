@@ -5,6 +5,8 @@
 	import Horarios from './tabs/Horarios.svelte';
 	import Reglas from './tabs/Reglas.svelte';
 
+	type ComponentType = typeof Ecuacion | typeof Horarios | typeof Reglas;
+
 	interface Props {
 		selectedRamoId: string;
 	}
@@ -23,19 +25,19 @@
 			id: 'horarios',
 			label: 'Horarios',
 			icon: Clock,
-			component: Horarios
+			component: Horarios as ComponentType
 		},
 		{
 			id: 'ecuacion',
 			label: 'Ecuación de Nota',
 			icon: Calculator,
-			component: Ecuacion
+			component: Ecuacion as ComponentType
 		},
 		{
 			id: 'reglas',
 			label: 'Reglas de Aprobación',
 			icon: Shield,
-			component: Reglas
+			component: Reglas as ComponentType
 		}
 	];
 
@@ -61,7 +63,10 @@
 							? 'bg-white text-slate-900 shadow-sm ring-1 ring-slate-200'
 							: 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}"
 					>
-						<svelte:component this={tab.icon} size={16} />
+						{#if tab.icon}
+							{@const IconComponent = tab.icon}
+							<IconComponent size={16} />
+						{/if}
 						<span class="hidden sm:inline">{tab.label}</span>
 					</button>
 				{/each}
@@ -72,9 +77,14 @@
 		<div class="flex-1 p-6 overflow-y-auto">
 			{#if activeComponent}
 				{#if activeTab === 'ecuacion'}
-					<svelte:component this={activeComponent} {selectedRamoId} />
-				{:else}
-					<svelte:component this={activeComponent} />
+					{@const Component = activeComponent}
+					<Component {selectedRamoId} />
+				{:else if activeTab === 'horarios'}
+					{@const Component = activeComponent}
+					<Component {selectedRamoId} />
+				{:else if activeTab === 'reglas'}
+					{@const Component = activeComponent}
+					<Component {selectedRamoId} />
 				{/if}
 			{/if}
 		</div>
