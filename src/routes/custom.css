@@ -1,0 +1,80 @@
+.bg-grid-pattern,
+body {
+	background-color: #fafafa; /* zinc-50 */
+	background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+	background-size: 24px 24px;
+}
+
+body {
+	padding: calc(var(--spacing) * 6);
+	height: 100vh;
+	width: 100vw;
+}
+
+@keyframes shine {
+	0% {
+		transform: translateX(-100%) skewX(-20deg);
+	}
+	100% {
+		transform: translateX(200%) skewX(-20deg);
+	}
+}
+
+@keyframes shine-container {
+	0% {
+		position: relative;
+		overflow: hidden;
+		background: linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.1) 0%,
+			rgba(255, 255, 255, 0.05) 100%
+		);
+		box-shadow:
+			0 0 20px rgba(59, 130, 246, 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+		border-radius: 0.75rem;
+	}
+	70% {
+		position: relative;
+		overflow: hidden;
+		background: linear-gradient(
+			135deg,
+			rgba(255, 255, 255, 0.1) 0%,
+			rgba(255, 255, 255, 0.05) 100%
+		);
+		box-shadow:
+			0 0 20px rgba(59, 130, 246, 0.3),
+			inset 0 1px 0 rgba(255, 255, 255, 0.2);
+		border-radius: 0.75rem;
+	}
+	100% {
+		position: inherit;
+		overflow: inherit;
+		background: none;
+		box-shadow: none;
+		border-radius: 0.75rem;
+	}
+}
+
+.shine-effect {
+	animation: shine-container 1.5s ease-out;
+	border-radius: 0rem;
+}
+
+.shine-effect::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 50%;
+	height: 100%;
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(255, 255, 255, 0.8) 50%,
+		transparent 100%
+	);
+	animation: shine 1.5s ease-out 0ms forwards;
+	pointer-events: none;
+	z-index: 10;
+}

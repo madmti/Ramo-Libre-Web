@@ -1,12 +1,15 @@
 <script lang="ts">
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import './custom.css';
 
 	let { children } = $props();
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href="/favicon.webp" />
+	<title>Ramo Libre</title>
 </svelte:head>
 
-{@render children()}
+<div class="h-full w-full flex flex-col max-sm:flex-col-reverse">
+	{@render children()}
+</div>
