@@ -63,24 +63,22 @@
 				<div class="flex items-center justify-center gap-2 flex-wrap p-6 mt-4">
 					{#each rules as rule, index (index)}
 						{@const tagColor = rule.tag_filter ? getTagColor(rule.tag_filter) : null}
-						
+
 						<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg border bg-white">
 							{#if rule.tag_filter}
 								<div class="w-2 h-2 rounded-full" style="background-color: {tagColor}"></div>
 							{/if}
-							
+
 							<span class="font-medium text-sm text-slate-700">
 								{formatRule(rule)}
 							</span>
 						</div>
-						
+
 						{#if index < rules.length - 1}
 							<div class="text-slate-400 text-sm font-medium">∧</div>
 						{/if}
 					{/each}
 				</div>
-
-
 			</div>
 		{:else}
 			<!-- Estado vacío -->

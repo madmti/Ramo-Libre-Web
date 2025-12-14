@@ -25,8 +25,6 @@
 	const rulesData = $derived(selectedRamoId ? db.notas.getRulesData(selectedRamoId) : { list: [] });
 	const rules = $derived(rulesData.list.map(([, rule]) => rule));
 
-
-
 	// --- ESTADO NUEVA REGLA ---
 	let newRuleType = $state<Rule['type']>('global_average');
 	let newRuleTarget = $state(55);
@@ -35,11 +33,11 @@
 	// --- ACCIONES ---
 	function addRule() {
 		if (!selectedRamoId) return;
-		
-		if (newRuleType === 'global_average' && rules.some(r => r.type === 'global_average')) {
+
+		if (newRuleType === 'global_average' && rules.some((r) => r.type === 'global_average')) {
 			return;
 		}
-		
+
 		if ((newRuleType === 'tag_average' || newRuleType === 'min_grade_per_tag') && !newRuleTag) {
 			return;
 		}
@@ -56,7 +54,7 @@
 
 	function removeRule(index: number) {
 		if (!selectedRamoId) return;
-		
+
 		const ruleId = rulesData.list[index]?.[0];
 		if (ruleId) {
 			db.notas.getRules(selectedRamoId).remove(ruleId);
@@ -108,37 +106,40 @@
 
 <div class="space-y-8 w-full max-w-4xl mx-auto pb-10">
 	<!-- Display de las Reglas -->
-	<ReglasDisplay rules={rules} tags={tagsList} />
+	<ReglasDisplay {rules} tags={tagsList} />
 
 	<!-- Formulario Simple -->
 	<div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
 		<h3 class="text-sm font-medium text-gray-500 mb-4 uppercase tracking-wide">Nueva Regla</h3>
-		
+
 		<div class="flex flex-wrap items-center gap-4">
 			<!-- Tipo -->
 			<div class="flex gap-2">
-				{#if !rules.some(r => r.type === 'global_average')}
+				{#if !rules.some((r) => r.type === 'global_average')}
 					<button
-						onclick={() => newRuleType = 'global_average'}
-						class="px-4 py-2 rounded-lg border text-sm font-medium transition-all cursor-pointer {newRuleType === 'global_average' 
-							? 'bg-blue-50 border-blue-300 text-blue-700' 
+						onclick={() => (newRuleType = 'global_average')}
+						class="px-4 py-2 rounded-lg border text-sm font-medium transition-all cursor-pointer {newRuleType ===
+						'global_average'
+							? 'bg-blue-50 border-blue-300 text-blue-700'
 							: 'bg-white border-gray-300 text-gray-600 hover:border-gray-400'}"
 					>
 						Promedio Final
 					</button>
 				{/if}
 				<button
-					onclick={() => newRuleType = 'tag_average'}
-					class="px-4 py-2 rounded-lg border text-sm font-medium transition-all cursor-pointer {newRuleType === 'tag_average' 
-						? 'bg-blue-50 border-blue-300 text-blue-700' 
+					onclick={() => (newRuleType = 'tag_average')}
+					class="px-4 py-2 rounded-lg border text-sm font-medium transition-all cursor-pointer {newRuleType ===
+					'tag_average'
+						? 'bg-blue-50 border-blue-300 text-blue-700'
 						: 'bg-white border-gray-300 text-gray-600 hover:border-gray-400'}"
 				>
 					Promedio por Tag
 				</button>
 				<button
-					onclick={() => newRuleType = 'min_grade_per_tag'}
-					class="px-4 py-2 rounded-lg border text-sm font-medium transition-all cursor-pointer {newRuleType === 'min_grade_per_tag' 
-						? 'bg-blue-50 border-blue-300 text-blue-700' 
+					onclick={() => (newRuleType = 'min_grade_per_tag')}
+					class="px-4 py-2 rounded-lg border text-sm font-medium transition-all cursor-pointer {newRuleType ===
+					'min_grade_per_tag'
+						? 'bg-blue-50 border-blue-300 text-blue-700'
 						: 'bg-white border-gray-300 text-gray-600 hover:border-gray-400'}"
 				>
 					Nota Mínima
@@ -152,9 +153,10 @@
 						{#each tagsList as [tagId, tag] (tagId)}
 							{@const tagColor = getTagHexColor(tag.color)}
 							<button
-								onclick={() => newRuleTag = tagId}
-								class="px-3 py-2 rounded-lg border text-sm font-medium transition-all flex items-center gap-2 cursor-pointer {newRuleTag === tagId 
-									? 'bg-blue-50 border-blue-300 text-blue-700' 
+								onclick={() => (newRuleTag = tagId)}
+								class="px-3 py-2 rounded-lg border text-sm font-medium transition-all flex items-center gap-2 cursor-pointer {newRuleTag ===
+								tagId
+									? 'bg-blue-50 border-blue-300 text-blue-700'
 									: 'bg-white border-gray-300 text-gray-600 hover:border-gray-400'}"
 							>
 								<div class="w-2 h-2 rounded-full" style="background-color: {tagColor}"></div>
@@ -193,7 +195,9 @@
 	{#if rules.length > 0}
 		<div class="space-y-3">
 			{#each rules as rule, index (index)}
-				<div class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg">
+				<div
+					class="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg"
+				>
 					<div class="flex items-center gap-3">
 						{#if rule.tag_filter}
 							{@const tag = getTag(rule.tag_filter)}
@@ -206,7 +210,7 @@
 							{formatRule(rule)}
 						</span>
 					</div>
-					
+
 					<button
 						onclick={() => removeRule(index)}
 						class="text-gray-300 hover:text-red-500 p-1 hover:bg-red-50 rounded transition-colors cursor-pointer"
