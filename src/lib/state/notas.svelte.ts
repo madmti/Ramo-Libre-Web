@@ -13,11 +13,20 @@ interface Evaluacion {
 	tags: TagKey[];
 }
 type EvaluacionKey = string;
+
+interface Rule {
+	type: 'global_average' | 'tag_average' | 'min_grade_per_tag';
+	target: number;
+	tag_filter?: string;
+	description?: string;
+}
+type RuleKey = string;
 type RamoKey = string;
 
 interface RamoData {
 	evaluaciones: SvelteMap<EvaluacionKey, Evaluacion>;
 	tags: SvelteMap<TagKey, Tag>;
+	rules: SvelteMap<RuleKey, Rule>;
 }
 
 type NotasSerial = {
@@ -26,6 +35,7 @@ type NotasSerial = {
 		{
 			evaluaciones: [EvaluacionKey, Evaluacion][];
 			tags: [TagKey, Tag][];
+			rules: [RuleKey, Rule][];
 		}
 	][];
 };
@@ -43,7 +53,8 @@ export class NotasManager implements Serializable<NotasSerial> {
 			serial.ramos.forEach(([ramoId, ramoSerial]) => {
 				ramosMap.set(ramoId, {
 					evaluaciones: new SvelteMap<EvaluacionKey, Evaluacion>(ramoSerial.evaluaciones || []),
-					tags: new SvelteMap<TagKey, Tag>(ramoSerial.tags || [])
+					tags: new SvelteMap<TagKey, Tag>(ramoSerial.tags || []),
+					rules: new SvelteMap<RuleKey, Rule>(ramoSerial.rules || [])
 				});
 			});
 		} else {
@@ -59,7 +70,8 @@ export class NotasManager implements Serializable<NotasSerial> {
 				ramoId,
 				{
 					evaluaciones: Array.from(ramoData.evaluaciones.entries()),
-					tags: Array.from(ramoData.tags.entries())
+					tags: Array.from(ramoData.tags.entries()),
+					rules: Array.from(ramoData.rules.entries())
 				}
 			])
 		};
@@ -78,7 +90,8 @@ export class NotasManager implements Serializable<NotasSerial> {
 		if (!this._ramos.has(ramoId)) {
 			this._ramos.set(ramoId, {
 				evaluaciones: new SvelteMap<EvaluacionKey, Evaluacion>(),
-				tags: new SvelteMap<TagKey, Tag>()
+				tags: new SvelteMap<TagKey, Tag>(),
+				rules: new SvelteMap<RuleKey, Rule>()
 			});
 		}
 		return this._ramos.get(ramoId)!;
@@ -111,6 +124,21 @@ export class NotasManager implements Serializable<NotasSerial> {
 		return {
 			list: Array.from(ramoData.tags.entries()),
 			map: ramoData.tags
+		};
+	}
+
+	// Obtener datos de reglas para un ramo específico (solo lectura para derivados)
+	getRulesData(ramoId: RamoKey) {
+		const ramoData = this._ramos.get(ramoId);
+		if (!ramoData) {
+			return {
+				list: [],
+				map: new SvelteMap<RuleKey, Rule>()
+			};
+		}
+		return {
+			list: Array.from(ramoData.rules.entries()),
+			map: ramoData.rules
 		};
 	}
 
@@ -162,6 +190,32 @@ export class NotasManager implements Serializable<NotasSerial> {
 			},
 			update: (id: TagKey, tag: Tag) => {
 				ramoData.tags.set(id, tag);
+			}
+		};
+	}
+
+	// Obtener API de reglas para un ramo específico
+	getRules(ramoId: RamoKey) {
+		const ramoData = this.ensureRamoData(ramoId);
+		return {
+			list: Array.from(ramoData.rules.entries()),
+			map: ramoData.rules,
+			add: (rule: Rule) => {
+				const id = crypto.randomUUID();
+				ramoData.rules.set(id, rule);
+				return id;
+			},
+			remove: (id: RuleKey) => {
+				ramoData.rules.delete(id);
+			},
+			get: (id: RuleKey) => {
+				return ramoData.rules.get(id);
+			},
+			has: (id: RuleKey) => {
+				return ramoData.rules.has(id);
+			},
+			update: (id: RuleKey, rule: Rule) => {
+				ramoData.rules.set(id, rule);
 			}
 		};
 	}
@@ -244,7 +298,7 @@ export class NotasManager implements Serializable<NotasSerial> {
 	hasRamoData(ramoId: RamoKey): boolean {
 		const ramoData = this._ramos.get(ramoId);
 		if (!ramoData) return false;
-		return ramoData.evaluaciones.size > 0 || ramoData.tags.size > 0;
+		return ramoData.evaluaciones.size > 0 || ramoData.tags.size > 0 || ramoData.rules.size > 0;
 	}
 
 	// Obtener lista de ramos con datos
