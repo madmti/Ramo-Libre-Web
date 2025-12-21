@@ -29,9 +29,9 @@ body {
 		transform: translateX(200%) skewX(-20deg);
 	}
 	100% {
-        opacity: 0;
-        transform: translateX(0%) skewX(0deg);
-    }
+		opacity: 0;
+		transform: translateX(0%) skewX(0deg);
+	}
 }
 
 @keyframes shine-container {
