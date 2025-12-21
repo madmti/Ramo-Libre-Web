@@ -13,11 +13,17 @@ body {
 
 @keyframes shine {
 	0% {
+		display: block;
 		transform: translateX(-100%) skewX(-20deg);
 	}
-	100% {
+	99% {
+		display: block;
 		transform: translateX(200%) skewX(-20deg);
 	}
+	100% {
+        opacity: 0;
+        transform: translateX(0%) skewX(0deg);
+    }
 }
 
 @keyframes shine-container {
@@ -57,7 +63,7 @@ body {
 }
 
 .shine-effect {
-	animation: shine-container 1.5s ease-out;
+	animation: shine-container 1.5s ease-out forwards;
 	border-radius: 0rem;
 }
 
