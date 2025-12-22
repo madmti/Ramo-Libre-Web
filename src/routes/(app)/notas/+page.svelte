@@ -11,8 +11,6 @@
 	// Estado para el ramo seleccionado
 	let selectedRamoId = $state('');
 
-
-
 	// Sincronizar el ramo seleccionado con el fragmento de la URL
 	$effect(() => {
 		if (!browser) return;

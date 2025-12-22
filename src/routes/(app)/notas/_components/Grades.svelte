@@ -7,8 +7,6 @@
 
 	let { selectedRamoId = '' }: Props = $props();
 
-
-
 	// Obtener las evaluaciones del ramo seleccionado
 	const evaluaciones = $derived.by(() => {
 		if (!selectedRamoId) {
@@ -88,7 +86,9 @@
 					}}
 					onblur={() => handleSave(id)}
 					onkeydown={(e) => handleKeydown(e)}
-					class="w-16 h-10 text-center font-bold border rounded-md {evaluacion.grade !== null ? 'border-blue-500 bg-blue-50' : 'border-dashed border-slate-300'} [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+					class="w-16 h-10 text-center font-bold border rounded-md {evaluacion.grade !== null
+						? 'border-blue-500 bg-blue-50'
+						: 'border-dashed border-slate-300'} [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
 				/>
 			</div>
 		{:else}

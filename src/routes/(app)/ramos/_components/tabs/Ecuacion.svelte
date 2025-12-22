@@ -113,7 +113,8 @@
 		db.notas.getEvaluaciones(selectedRamoId).add({
 			name: newEvalName.trim(),
 			weight: newEvalWeight,
-			tags: []
+			tags: [],
+			grade: null
 		});
 
 		newEvalName = '';
