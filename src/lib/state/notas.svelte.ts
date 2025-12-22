@@ -11,6 +11,7 @@ interface Evaluacion {
 	name: string;
 	weight: number;
 	tags: TagKey[];
+	grade: number | null;
 }
 type EvaluacionKey = string;
 
@@ -150,7 +151,10 @@ export class NotasManager implements Serializable<NotasSerial> {
 			map: ramoData.evaluaciones,
 			add: (evaluacion: Evaluacion) => {
 				const id = crypto.randomUUID();
-				ramoData.evaluaciones.set(id, evaluacion);
+				ramoData.evaluaciones.set(id, {
+					...evaluacion,
+					grade: null
+				});
 				return id;
 			},
 			remove: (id: EvaluacionKey) => {
