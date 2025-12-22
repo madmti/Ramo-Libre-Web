@@ -18,13 +18,21 @@
 	let nombreRamo = $state('');
 	let isFormExpanded = $state(false);
 
+	// Estado para el selector móvil
+	let isMobileDropdownOpen = $state(false);
+	let isMobileFormVisible = $state(false);
+
 	// Computed para verificar si hay ramos
 	const hasRamos = $derived(db.ramos.list.length > 0);
+
+	// Obtener el ramo seleccionado
+	const selectedRamo = $derived(selectedRamoId ? db.ramos.get(selectedRamoId) : null);
 
 	// Auto-expandir cuando no hay ramos
 	$effect(() => {
 		if (!hasRamos) {
 			isFormExpanded = true;
+			isMobileFormVisible = true;
 		}
 	});
 
@@ -42,6 +50,10 @@
 		if (id) {
 			onSelectRamo(id);
 		}
+
+		// Cerrar formularios
+		isFormExpanded = false;
+		isMobileFormVisible = false;
 	}
 
 	function handleRemoveRamo(id: string) {
@@ -50,10 +62,20 @@
 		}
 		db.ramos.remove(id);
 	}
+
+	function handleMobileSelect(id: string) {
+		onSelectRamo(id);
+		isMobileDropdownOpen = false;
+	}
+
+	function closeMobileDropdown() {
+		isMobileDropdownOpen = false;
+	}
 </script>
 
+<!-- Versión Desktop (sm y superiores) -->
 <div
-	class="bg-white border border-slate-200 rounded-xl p-6 flex flex-col h-full min-h-0 overflow-hidden"
+	class="hidden sm:flex bg-white border border-slate-200 rounded-xl p-6 flex-col h-full min-h-0 overflow-hidden"
 >
 	<!-- Header -->
 	<div class="flex items-center justify-between mb-6 shrink-0">
@@ -167,5 +189,201 @@
 				<p class="text-xs mt-1">Agrega uno usando el formulario.</p>
 			</div>
 		{/each}
+	</div>
+</div>
+
+<!-- Versión Móvil (menores a sm) -->
+<div class="sm:hidden space-y-3">
+	<!-- Botón selector móvil -->
+	<div class="relative">
+		<button
+			onclick={() => (isMobileDropdownOpen = !isMobileDropdownOpen)}
+			class="w-full bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between transition-all duration-200 {isMobileDropdownOpen
+				? 'border-orange-200 bg-orange-50'
+				: 'hover:border-slate-300'}"
+		>
+			{#if selectedRamo}
+				<div class="flex items-center gap-3">
+					<!-- Avatar del ramo seleccionado -->
+					<div
+						class="h-8 w-8 rounded-lg text-white shadow-sm border border-white/20 flex items-center justify-center font-bold text-xs"
+						style="background-color: {selectedRamo.color};"
+					>
+						{selectedRamo.nombre.substring(0, 2).toUpperCase()}
+					</div>
+					<div class="text-left">
+						<div class="font-semibold text-slate-800 truncate">{selectedRamo.nombre}</div>
+						<div class="text-xs text-slate-400 font-mono">{selectedRamoId.slice(0, 8)}</div>
+					</div>
+				</div>
+			{:else}
+				<div class="flex items-center gap-3 text-slate-500">
+					<div class="h-8 w-8 rounded-lg bg-slate-200 flex items-center justify-center">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+							></path>
+						</svg>
+					</div>
+					<span class="font-medium">Seleccionar ramo</span>
+				</div>
+			{/if}
+
+			<!-- Icono de flecha -->
+			<svg
+				class="w-5 h-5 text-slate-400 transition-transform duration-200 {isMobileDropdownOpen
+					? 'rotate-180'
+					: ''}"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"
+				></path>
+			</svg>
+		</button>
+
+		<!-- Dropdown con las cartas de ramos -->
+		{#if isMobileDropdownOpen}
+			<!-- Overlay para cerrar al tocar fuera -->
+			<div
+				class="fixed inset-0 z-10"
+				onclick={closeMobileDropdown}
+				onkeydown={(e) => e.key === 'Escape' && closeMobileDropdown()}
+				role="button"
+				tabindex="0"
+				aria-label="Close dropdown"
+			></div>
+
+			<div
+				class="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-xl shadow-lg z-20 max-h-80 overflow-y-auto"
+			>
+				{#if db.ramos.list.length > 0}
+					<div class="p-2">
+						<!-- Header con opción de agregar -->
+						<div class="flex items-center justify-between px-3 py-2 border-b border-slate-100 mb-1">
+							<div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+								Mis Ramos ({db.ramos.list.length})
+							</div>
+							<button
+								onclick={() => (isMobileFormVisible = !isMobileFormVisible)}
+								class="p-2 text-slate-400 hover:text-orange-600 hover:bg-orange-50 rounded transition-all {isMobileFormVisible
+									? 'rotate-45'
+									: ''}"
+							>
+								<Plus class="w-5 h-5" />
+							</button>
+						</div>
+
+						<!-- Formulario como carta dentro del dropdown -->
+						{#if isMobileFormVisible}
+							<div class="mx-2 mb-2 p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+								<div class="space-y-2">
+									<label
+										for="nombreRamoMobileDropdown"
+										class="block text-xs font-medium text-slate-600"
+									>
+										Nueva asignatura
+									</label>
+									<input
+										id="nombreRamoMobileDropdown"
+										type="text"
+										bind:value={nombreRamo}
+										onkeydown={(e) => e.key === 'Enter' && handleAgregar()}
+										placeholder="Ej: Arquitectura de Software"
+										class="w-full px-3 py-2 bg-white rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all text-sm"
+									/>
+								</div>
+								<Button
+									onclick={handleAgregar}
+									disabled={!nombreRamo.trim()}
+									class="w-full bg-orange-500 hover:bg-orange-600 text-white text-sm py-2"
+									size="sm"
+								>
+									<Plus class="w-3 h-3 mr-2" />
+									Agregar
+								</Button>
+							</div>
+						{/if}
+
+						<div class="space-y-1">
+							{#each db.ramos.list as [id, ramo] (id)}
+								<div
+									class="flex items-center gap-2 p-2 rounded-lg {selectedRamoId === id
+										? 'bg-orange-50'
+										: 'hover:bg-slate-50'} transition-all duration-200"
+								>
+									<button
+										onclick={() => handleMobileSelect(id)}
+										class="flex-1 flex items-center gap-3 text-left"
+									>
+										<!-- Indicador de color -->
+										<div
+											class="h-8 w-8 rounded-lg text-white shadow-sm border border-white/20 flex items-center justify-center font-bold text-xs"
+											style="background-color: {ramo.color};"
+										>
+											{ramo.nombre.substring(0, 2).toUpperCase()}
+										</div>
+
+										<div class="flex-1 min-w-0">
+											<div class="font-semibold text-slate-800 truncate">{ramo.nombre}</div>
+											<div class="text-xs text-slate-400 font-mono">
+												{id.slice(0, 8)}
+											</div>
+										</div>
+
+										{#if selectedRamoId === id}
+											<svg class="w-4 h-4 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+												<path
+													fill-rule="evenodd"
+													d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+													clip-rule="evenodd"
+												></path>
+											</svg>
+										{/if}
+									</button>
+
+									<!-- Botón eliminar -->
+									<button
+										onclick={(e) => {
+											e.stopPropagation();
+											handleRemoveRamo(id);
+										}}
+										class="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded transition-all"
+									>
+										<Trash class="w-4 h-4" />
+									</button>
+								</div>
+							{/each}
+						</div>
+					</div>
+				{:else}
+					<div class="p-6 text-center text-slate-400">
+						<div class="mb-3">
+							<svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+								></path>
+							</svg>
+						</div>
+						<p class="text-sm font-medium text-slate-700 mb-2">No hay ramos registrados</p>
+						<p class="text-xs mb-3">Agrega tu primer ramo para comenzar</p>
+						<button
+							onclick={() => (isMobileFormVisible = true)}
+							class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 transition-colors"
+						>
+							<Plus class="w-3 h-3 mr-1" />
+							Agregar Ramo
+						</button>
+					</div>
+				{/if}
+			</div>
+		{/if}
 	</div>
 </div>

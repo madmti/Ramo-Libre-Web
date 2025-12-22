@@ -166,7 +166,7 @@
 				>
 					<Tag size={14} /> Banco de Etiquetas
 				</span>
-				<p class="text-[11px] text-gray-400 h-4">
+				<p class="text-[11px] text-gray-400 h-4 max-sm:hidden">
 					{#if paintMode && selectedTagForPainting}
 						<span class="text-indigo-600 font-bold animate-pulse"
 							>Pintando con etiqueta seleccionada:</span
@@ -176,6 +176,15 @@
 						para pintar.
 					{:else}
 						Haz clic en el modo pintor para comenzar a etiquetar evaluaciones.
+					{/if}
+				</p>
+				<p class="text-[11px] text-gray-400 h-4 sm:hidden mb-2">
+					{#if paintMode && selectedTagForPainting}
+						Toca las evaluaciones abajo para asignar.
+					{:else if paintMode}
+						Selecciona una etiqueta para pintar.
+					{:else}
+						Haz clic en el modo pintor etiquetar evaluaciones.
 					{/if}
 				</p>
 			</div>
