@@ -361,26 +361,31 @@
 						</div>
 					</div>
 				{:else}
-					<div class="p-6 text-center text-slate-400">
-						<div class="mb-3">
-							<svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-								></path>
-							</svg>
+					<div class="p-4">
+						<div class="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+							<div class="space-y-2">
+								<label for="nombreRamoMobileEmpty" class="block text-xs font-medium text-slate-600">
+									Tu primer ramo
+								</label>
+								<input
+									id="nombreRamoMobileEmpty"
+									type="text"
+									bind:value={nombreRamo}
+									onkeydown={(e) => e.key === 'Enter' && handleAgregar()}
+									placeholder="Ej: Arquitectura de Software"
+									class="w-full px-3 py-2 bg-white rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all text-sm"
+								/>
+							</div>
+							<Button
+								onclick={handleAgregar}
+								disabled={!nombreRamo.trim()}
+								class="w-full bg-orange-500 hover:bg-orange-600 text-white text-sm py-2"
+								size="sm"
+							>
+								<Plus class="w-3 h-3 mr-2" />
+								Agregar
+							</Button>
 						</div>
-						<p class="text-sm font-medium text-slate-700 mb-2">No hay ramos registrados</p>
-						<p class="text-xs mb-3">Agrega tu primer ramo para comenzar</p>
-						<button
-							onclick={() => (isMobileFormVisible = true)}
-							class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-lg text-white bg-orange-600 hover:bg-orange-700 transition-colors"
-						>
-							<Plus class="w-3 h-3 mr-1" />
-							Agregar Ramo
-						</button>
 					</div>
 				{/if}
 			</div>
