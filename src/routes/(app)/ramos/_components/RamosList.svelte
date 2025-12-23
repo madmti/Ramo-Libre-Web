@@ -2,6 +2,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { IconButton } from '$lib/components/ui/icon-button';
 	import * as Tooltip from '$lib/components/ui/tooltip';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Trash, Plus, Minus } from '@lucide/svelte';
 	import { slide } from 'svelte/transition';
 	import { db } from '$lib/state/index.svelte.js';
@@ -21,6 +22,9 @@
 	// Estado para el selector móvil
 	let isMobileDropdownOpen = $state(false);
 	let isMobileFormVisible = $state(false);
+
+	// Estado para confirmación de eliminación
+	let deleteConfirmData = $state<{ id: string; name: string } | null>(null);
 
 	// Computed para verificar si hay ramos
 	const hasRamos = $derived(db.ramos.list.length > 0);
@@ -56,11 +60,24 @@
 		isMobileFormVisible = false;
 	}
 
-	function handleRemoveRamo(id: string) {
-		if (selectedRamoId === id) {
+	function openDeleteConfirm(id: string) {
+		const ramo = db.ramos.get(id);
+		if (!ramo) return;
+		deleteConfirmData = { id, name: ramo.nombre };
+	}
+
+	function confirmDelete() {
+		if (!deleteConfirmData) return;
+
+		if (selectedRamoId === deleteConfirmData.id) {
 			onSelectRamo('');
 		}
-		db.ramos.remove(id);
+		db.removeRamo(deleteConfirmData.id);
+		deleteConfirmData = null;
+	}
+
+	function cancelDelete() {
+		deleteConfirmData = null;
 	}
 
 	function handleMobileSelect(id: string) {
@@ -169,7 +186,7 @@
 						<IconButton
 							onclick={(e) => {
 								e.stopPropagation();
-								handleRemoveRamo(id);
+								openDeleteConfirm(id);
 							}}
 							class="text-slate-300 hover:text-rose-500 hover:bg-rose-50 opacity-0 group-hover:opacity-100 cursor-pointer transition-all"
 							size="sm"
@@ -350,9 +367,9 @@
 									<button
 										onclick={(e) => {
 											e.stopPropagation();
-											handleRemoveRamo(id);
+											openDeleteConfirm(id);
 										}}
-										class="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded transition-all"
+										class="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 active:text-rose-600 active:bg-rose-100 active:scale-95 rounded transition-all duration-150"
 									>
 										<Trash class="w-4 h-4" />
 									</button>
@@ -392,3 +409,32 @@
 		{/if}
 	</div>
 </div>
+
+<!-- Diálogo de confirmación para eliminar ramo -->
+<AlertDialog.Root
+	open={deleteConfirmData !== null}
+	onOpenChange={(open) => !open && cancelDelete()}
+>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>¿Confirmar eliminación?</AlertDialog.Title>
+			<AlertDialog.Description>
+				{#if deleteConfirmData}
+					Esta acción eliminará permanentemente el ramo <strong>"{deleteConfirmData.name}"</strong>
+					y todos los datos asociados (evaluaciones, tags, reglas). Esta acción no se puede deshacer.
+				{/if}
+			</AlertDialog.Description>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel onclick={cancelDelete} class="cursor-pointer">
+				Cancelar
+			</AlertDialog.Cancel>
+			<AlertDialog.Action
+				onclick={confirmDelete}
+				class="bg-red-600 hover:bg-red-700 cursor-pointer"
+			>
+				Eliminar
+			</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
