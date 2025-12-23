@@ -114,7 +114,7 @@
 
 		<div class="flex flex-wrap items-center gap-4">
 			<!-- Tipo -->
-			<div class="flex gap-2">
+			<div class="flex max-sm:grid max-sm:grid-rows-3 max-sm:w-full gap-2">
 				{#if !rules.some((r) => r.type === 'global_average')}
 					<button
 						onclick={() => (newRuleType = 'global_average')}

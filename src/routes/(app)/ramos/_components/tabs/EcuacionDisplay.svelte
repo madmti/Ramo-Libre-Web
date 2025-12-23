@@ -29,11 +29,6 @@
 		const firstTag = tagsMap.get(evaluacion.tags[0]);
 		return firstTag ? ColorUtils.tailwindToHex(firstTag.color) : '#64748b';
 	}
-
-	// Calcular peso total
-	const totalWeight = $derived(
-		evaluaciones.reduce((acc, [, evaluacion]) => acc + evaluacion.weight, 0)
-	);
 </script>
 
 <div class="flex justify-center">
@@ -64,17 +59,6 @@
 						</div>
 					{/each}
 				</div>
-
-				<!-- Información del peso total -->
-				{#if totalWeight !== 100}
-					<div class="text-xs {totalWeight > 100 ? 'text-red-500' : 'text-amber-500'} font-medium">
-						Peso total: {totalWeight}% {totalWeight > 100
-							? '(excede 100%)'
-							: totalWeight < 100
-								? '(falta ' + (100 - totalWeight) + '%)'
-								: ''}
-					</div>
-				{/if}
 			</div>
 		{:else}
 			<!-- Estado vacío -->
