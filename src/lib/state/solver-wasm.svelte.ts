@@ -125,7 +125,7 @@ class SolverWASMManager {
 	// Utility method to wait for ready state
 	async waitForReady(): Promise<boolean> {
 		if (this._state.isReady) return true;
-		
+
 		if (!this._state.isLoading && !this.initializationPromise) {
 			await this.initialize();
 		}
