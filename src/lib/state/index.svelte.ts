@@ -2,7 +2,7 @@ import { browser } from '$app/environment';
 import { SemestresManager } from './semestres.svelte';
 import { RamosManager } from './ramos.svelte';
 import { NotasManager } from './notas.svelte';
-import { solverWASM } from './solver-wasm.svelte';
+export { solverWASM } from './solver-wasm.svelte';
 
 const STORAGE_KEY = (sem: string) => `RAMOLIBRE_ROOT_STORE_V1_${sem}`;
 const SEMESTER_KEY = 'RAMOLIBRE_SEMESTER';
@@ -109,6 +109,3 @@ class RootStore {
 }
 
 export const db = new RootStore();
-
-// Export WASM solver as a separate singleton
-export { solverWASM };
